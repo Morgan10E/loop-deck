@@ -5,7 +5,7 @@ A browser-based music player for building **loops** on top of a song.
 Upload an audio file, see its waveform, drop loop markers wherever you like, and
 play them live — flowing from one loop into the next while the music is running.
 
-## Try it
+## Try it locally
 
 No build step and no dependencies. Just serve the folder and open it:
 
@@ -15,6 +15,40 @@ python3 -m http.server 8000
 ```
 
 (Opening `index.html` directly with `file://` works too in most browsers.)
+
+## Host it on GitHub Pages
+
+The site is plain static files at the repo root with relative links, so it runs
+as-is on GitHub Pages — including from a project subpath like
+`https://<user>.github.io/loop-deck/`.
+
+There are two ways to publish it; pick one.
+
+### Option A — GitHub Actions (included, recommended)
+
+A workflow at `.github/workflows/pages.yml` builds and deploys on every push.
+
+1. Push this branch to GitHub (already done if you're reading this there).
+2. In the repo, go to **Settings → Pages**.
+3. Under **Build and deployment → Source**, choose **GitHub Actions**.
+4. The workflow runs on pushes to `main`, `master`, or the
+   `claude/music-player-loops-wnjr44` branch (and can be run manually from the
+   **Actions** tab via **Run workflow**). When it finishes, the live URL is
+   shown in the Actions run summary and on the Settings → Pages screen.
+
+### Option B — Deploy from a branch (no Actions)
+
+1. In the repo, go to **Settings → Pages**.
+2. Under **Build and deployment → Source**, choose **Deploy from a branch**.
+3. Select the branch to publish and the **`/ (root)`** folder, then **Save**.
+4. Give it a minute, then load the URL Pages shows you.
+
+A `.nojekyll` file is included so GitHub serves the files directly without
+running Jekyll.
+
+> Pages is served over HTTPS, which the Web Audio API requires — so playback and
+> looping work exactly the same as they do locally. The audio file you load
+> still stays in your browser and is never uploaded anywhere.
 
 ## How it works
 
