@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loop Deck</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app__header">
+      <h1 class="app__title">Loop&nbsp;Deck</h1>
+      <p class="app__subtitle">Upload a song, drop loops on the waveform, and play them live.</p>
+    </header>
+
+    <section class="uploader" id="uploader">
+      <label class="uploader__drop" id="drop">
+        <input type="file" id="fileInput" accept="audio/*" hidden />
+        <span class="uploader__icon">♫</span>
+        <span class="uploader__text">Click to choose an audio file</span>
+        <span class="uploader__hint">or drag &amp; drop it here</span>
+      </label>
+    </section>
+
+    <section class="stage" id="stage" hidden>
+      <div class="track" id="track">
+        <canvas class="track__canvas" id="waveform"></canvas>
+        <div class="track__overlay" id="overlay">
+          <div class="track__playhead" id="playhead"></div>
+          <div class="track__markers" id="markers"></div>
+        </div>
+      </div>
+
+      <div class="track__meta">
+        <span class="track__filename" id="filename"></span>
+        <span class="track__time"><span id="curTime">0:00</span> / <span id="durTime">0:00</span></span>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn--ghost" id="addLoopBtn" title="Drop a loop marker at the playhead">
+          <span class="btn__glyph">＋</span> Add loop
+        </button>
+        <button class="btn btn--primary" id="playBtn">
+          <span class="btn__glyph" id="playGlyph">▶</span>
+          <span id="playLabel">Play</span>
+        </button>
+        <button class="btn btn--next" id="nextBtn" hidden title="Flow past the next end into the following loop">
+          <span class="btn__glyph">⏭</span> Next
+        </button>
+        <button class="btn btn--end" id="endBtn" hidden title="Stop the next time an end is reached">
+          <span class="btn__glyph">■</span> End
+        </button>
+        <button class="btn btn--ghost" id="newFileBtn" title="Load a different song">Change song</button>
+      </div>
+
+      <p class="hint" id="hint">
+        <strong>Tip:</strong> Click a marker to flip it between start <code>-&gt;</code> and
+        end <code>&lt;-</code>. Drag to move it. Double-click to delete.
+      </p>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
