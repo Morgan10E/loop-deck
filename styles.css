@@ -104,6 +104,33 @@ body {
   font-size: 13px;
 }
 
+.uploader__or {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.btn--demo {
+  background: var(--panel-2);
+  border-color: var(--line);
+  color: var(--accent);
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.btn--demo:hover {
+  border-color: var(--accent);
+}
+
+.btn--demo:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 /* Stage */
 .stage {
   background: var(--panel);

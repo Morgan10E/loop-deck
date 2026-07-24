@@ -5,6 +5,21 @@ A browser-based music player for building **loops** on top of a song.
 Upload an audio file, see its waveform, drop loop markers wherever you like, and
 play them live — flowing from one loop into the next while the music is running.
 
+Don't have a file handy? Click **Try the demo track** to load a bundled
+public-domain song and start experimenting immediately.
+
+## Demo track
+
+`assets/fur-elise.wav` is a short rendition of Beethoven's *Für Elise*
+(composed 1810 — long in the **public domain**). The recording isn't ripped
+from anywhere: it's synthesized from scratch by `tools/make-demo.py`, so the
+audio file itself carries no separate performance or recording copyright. Re-run
+that script to regenerate it:
+
+```bash
+python3 tools/make-demo.py   # writes assets/fur-elise.wav (stdlib only)
+```
+
 ## Try it locally
 
 No build step and no dependencies. Just serve the folder and open it:

@@ -42,6 +42,7 @@
   const nextBtn = document.getElementById("nextBtn");
   const endBtn = document.getElementById("endBtn");
   const newFileBtn = document.getElementById("newFileBtn");
+  const demoBtn = document.getElementById("demoBtn");
 
   const ctxClass = window.AudioContext || window.webkitAudioContext;
 
@@ -286,6 +287,32 @@
   }
 
   // ---- Loading & decoding -------------------------------------------------
+  // Bundled public-domain demo so people can try the app without a file of
+  // their own. It's a freshly synthesized rendition of Beethoven's "Fur Elise".
+  const DEMO_URL = "assets/fur-elise.wav";
+  const DEMO_NAME = "Fur Elise — Beethoven (public domain demo)";
+
+  async function loadDemo() {
+    const ctx = ensureCtx();
+    demoBtn.disabled = true;
+    const original = demoBtn.innerHTML;
+    demoBtn.textContent = "Loading…";
+    try {
+      const resp = await fetch(DEMO_URL);
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      const arrayBuf = await resp.arrayBuffer();
+      const audioBuf = await ctx.decodeAudioData(arrayBuf);
+      filenameEl.textContent = DEMO_NAME;
+      resetForNewBuffer(audioBuf);
+    } catch (err) {
+      alert("Sorry, the demo track could not be loaded.");
+      console.error(err);
+    } finally {
+      demoBtn.disabled = false;
+      demoBtn.innerHTML = original;
+    }
+  }
+
   async function loadFile(file) {
     if (!file) return;
     const ctx = ensureCtx();
@@ -534,6 +561,7 @@
     fileInput.value = "";
     fileInput.click();
   });
+  demoBtn.addEventListener("click", loadDemo);
 
   // Keep the canvas + markers correct on resize.
   let resizeRaf = 0;
