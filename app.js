@@ -292,8 +292,23 @@
   const DEMO_URL = "assets/fur-elise.wav";
   const DEMO_NAME = "Fur Elise — Beethoven (public domain demo)";
 
+  // decodeAudioData works two ways across browsers: modern engines return a
+  // Promise, but Safari/iOS historically only supports the callback form (and
+  // returns undefined). Support both, so `await` never hangs on undefined.
+  function decodeAudio(ctx, arrayBuf) {
+    return new Promise((resolve, reject) => {
+      const maybePromise = ctx.decodeAudioData(arrayBuf, resolve, reject);
+      if (maybePromise && typeof maybePromise.then === "function") {
+        maybePromise.then(resolve, reject);
+      }
+    });
+  }
+
   async function loadDemo() {
     const ctx = ensureCtx();
+    // iOS unlocks audio only inside a user gesture; resume here while we're
+    // still in the tap handler's call stack.
+    if (ctx.state === "suspended") ctx.resume();
     demoBtn.disabled = true;
     const original = demoBtn.innerHTML;
     demoBtn.textContent = "Loading…";
@@ -301,7 +316,8 @@
       const resp = await fetch(DEMO_URL);
       if (!resp.ok) throw new Error("HTTP " + resp.status);
       const arrayBuf = await resp.arrayBuffer();
-      const audioBuf = await ctx.decodeAudioData(arrayBuf);
+      const audioBuf = await decodeAudio(ctx, arrayBuf);
+      if (!audioBuf) throw new Error("decodeAudioData returned no buffer");
       filenameEl.textContent = DEMO_NAME;
       resetForNewBuffer(audioBuf);
     } catch (err) {
@@ -319,7 +335,8 @@
     filenameEl.textContent = file.name;
     try {
       const arrayBuf = await file.arrayBuffer();
-      const audioBuf = await ctx.decodeAudioData(arrayBuf);
+      const audioBuf = await decodeAudio(ctx, arrayBuf);
+      if (!audioBuf) throw new Error("decodeAudioData returned no buffer");
       resetForNewBuffer(audioBuf);
     } catch (err) {
       alert("Sorry, that file could not be decoded as audio.");
