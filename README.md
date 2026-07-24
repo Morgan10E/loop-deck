@@ -20,34 +20,30 @@ python3 -m http.server 8000
 
 The site is plain static files at the repo root with relative links, so it runs
 as-is on GitHub Pages — including from a project subpath like
-`https://<user>.github.io/loop-deck/`.
-
-There are two ways to publish it; pick one.
-
-### Option A — GitHub Actions (included, recommended)
-
-A workflow at `.github/workflows/pages.yml` builds and deploys on every push
-to `main` (or `master`), and can also be run manually from the **Actions** tab
-via **Run workflow**.
-
-The workflow enables Pages for you on its first run (`configure-pages` runs with
-`enablement: true`), so there's nothing to toggle in settings — just push. When
-a run finishes, the live URL is shown in the Actions run summary and on the
-**Settings → Pages** screen.
-
-### Option B — Deploy from a branch (no Actions)
+`https://<user>.github.io/loop-deck/`. There's no build step, so no CI is
+needed: let Pages serve the files straight from the branch.
 
 1. In the repo, go to **Settings → Pages**.
 2. Under **Build and deployment → Source**, choose **Deploy from a branch**.
-3. Select the branch to publish and the **`/ (root)`** folder, then **Save**.
-4. Give it a minute, then load the URL Pages shows you.
+3. Select **`main`** and the **`/ (root)`** folder, then **Save**.
+4. Give it a minute, then load the URL Pages shows you
+   (`https://<user>.github.io/loop-deck/`).
 
 A `.nojekyll` file is included so GitHub serves the files directly without
-running Jekyll.
+running Jekyll. GitHub's own "pages build and deployment" runs automatically on
+each push — there is no custom workflow to maintain or to fail.
 
 > Pages is served over HTTPS, which the Web Audio API requires — so playback and
 > looping work exactly the same as they do locally. The audio file you load
 > still stays in your browser and is never uploaded anywhere.
+
+> **Prefer a GitHub Actions deploy instead?** It's not required for this static
+> site, but if you want one, set **Settings → Pages → Source** to
+> **GitHub Actions** *first* (that grants the `github-pages` environment
+> permission to deploy from `main`), then add a workflow using
+> `actions/upload-pages-artifact` + `actions/deploy-pages`. Adding such a
+> workflow while the Source is still "Deploy from a branch" makes it fail at
+> startup, because the environment only allows the branch pipeline to deploy.
 
 ## How it works
 
