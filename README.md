@@ -26,15 +26,14 @@ There are two ways to publish it; pick one.
 
 ### Option A — GitHub Actions (included, recommended)
 
-A workflow at `.github/workflows/pages.yml` builds and deploys on every push.
+A workflow at `.github/workflows/pages.yml` builds and deploys on every push
+to `main` (or `master`), and can also be run manually from the **Actions** tab
+via **Run workflow**.
 
-1. Push this branch to GitHub (already done if you're reading this there).
-2. In the repo, go to **Settings → Pages**.
-3. Under **Build and deployment → Source**, choose **GitHub Actions**.
-4. The workflow runs on pushes to `main`, `master`, or the
-   `claude/music-player-loops-wnjr44` branch (and can be run manually from the
-   **Actions** tab via **Run workflow**). When it finishes, the live URL is
-   shown in the Actions run summary and on the Settings → Pages screen.
+The workflow enables Pages for you on its first run (`configure-pages` runs with
+`enablement: true`), so there's nothing to toggle in settings — just push. When
+a run finishes, the live URL is shown in the Actions run summary and on the
+**Settings → Pages** screen.
 
 ### Option B — Deploy from a branch (no Actions)
 
